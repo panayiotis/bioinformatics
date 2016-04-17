@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='ie=edge' http-equiv='x-ua-compatible'>
+    <title>Bioinformatics</title>
+    <meta content='Bioinformatics' name='description'>
+    <meta content='panayiotis' name='author'>
+    <link href='/bioinformatics/assets/icon-e2edc2b228859786fa23e22b543c3f3e7729d33263ab8e50b97e5b9bf59bd7e0.png' rel='icon'>
+    <link href='/bioinformatics/assets/application-336bba1f0ff6c171d866e869cb9b6b19f0a5099b8e1e2dedd5da0a247b5cec36.css' rel='stylesheet'>
+    <script src='/bioinformatics/assets/application-7d9d5e74ebd0167e7948f5544190825ccff7617666a7b8cb79a99a0d94378aea.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div class='row'>
+      <div class='medium-12 large-12 columns'>
+        <h1>Motion Planning</h1>
+        <p>
+          The
+          <span class='green'>green molecule</span>
+          has to move from point
+          <span class='brown bold'>A</span>
+          to point
+          <span class='brown bold'>B.</span>
+          <span class='blue'>Blue area</span>
+          is an obstacle.
+          The
+          <span class='green'>green molecule</span>
+          has one fixed point at the center of the circle and
+          two moving parts with two degrees of freedom.
+          The posible molecule conformations and moves are determened by two angles, φ1 (0, 2π) and φ2 (-π, π).
+        </p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='large-6 columns' id='workspace'>
+        <h3>Workspace</h3>
+        <p>move the sliders to change the angles</p>
+      </div>
+      <div class='large-6 columns' id='cspacesvg'>
+        <h3>Configuration space</h3>
+        <p>
+          In the configuration space the
+          <span class='blue'>blue area</span>
+          is the obstacle, and the
+          <span class='green'>green circle</span>
+          is the molecule that has to move from
+          <span class='brown bold'>A</span>
+          to
+          <span class='brown bold'>B.</span>
+        </p>
+        <p>
+          A
+          <span class='orange'>free path</span>
+          from
+          <span class='brown bold'>A</span>
+          to
+          <span class='brown bold'>B</span>
+          exists, drag the
+          <span class='green'>molecule</span>
+          to see how it changes conformation as it moves though the workspace.
+        </p>
+      </div>
+    </div>
+    <script>
+      (function() {
+        motionplanning();
+      
+      }).call(this);
+    </script>
+    <script>
+      (function() {
+        $(document).foundation();
+      
+        hljs.configure({
+          languages: []
+        });
+      
+        hljs.initHighlightingOnLoad();
+      
+      }).call(this);
+    </script>
+  </body>
+</html>

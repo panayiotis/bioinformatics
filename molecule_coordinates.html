@@ -8,12 +8,12 @@
     <meta content='Bioinformatics' name='description'>
     <meta content='panayiotis' name='author'>
     <link href='/bioinformatics/assets/icon-e2edc2b228859786fa23e22b543c3f3e7729d33263ab8e50b97e5b9bf59bd7e0.png' rel='icon'>
-    <link href='/bioinformatics/assets/application-8c86b17eb417288aee145907935861a482d1cd37ef944312226eba4d76bf7210.css' rel='stylesheet'>
+    <link href='/bioinformatics/assets/application-3d136bcc02f7053b2b2ad71ebcea6773b7ecd4ded8d02172c7cbb9540c8e8b86.css' rel='stylesheet'>
     <script src='/bioinformatics/assets/application-6ae86d31d216149358a8af16e1657e6ec80b42d7136f2605e593ac68aec56a22.js' type='text/javascript'></script>
   </head>
   <body>
     <div class='row'>
-      <div class='medium-12 columns justify'>
+      <div class='medium-12 large-12 columns justify'>
         <h1>Atom Distances to Coordinates</h1>
         
         <p>The project has been implemented in Scala.<br>
@@ -22,10 +22,10 @@
         If found in the running system, BLAS/LAPACK/ARPACK native libraries
         will be used in runtime for high performance Linear Algebra operations.</p>
       </div>
-      <div class='medium-6 columns'></div>
     </div>
     <div class='row' id='pvrow'>
       <div class='large-4 columns justify large-push-8'>
+        <div class='large-spacer'></div>
         <h3>Spirohydantoin inhibitor of glycogen phosphorylase</h3>
         
         <p><a href="http://files.rcsb.org/view/1A8I.pdb">pdb file🔗</a></p>
@@ -38,13 +38,17 @@
     </div>
     <div class='row'>
       <div class='large-4 columns justify large-push-8'>
+        <div class='large-spacer'></div>
+        <h4>The input carbon atoms.</h4>
+        
         <p>The algorithm imports pdb files and extracts the atom sequences.
         In this case <em>spirohydantoin inhibitor of glycogen phosphorylase</em> is
-        imported and carbon atoms with residue sequence number 294 - 296 have been
+        imported and carbon atoms with residue sequence number 294 - 296 are
         filtered to create the coordinate matrix.</p>
         
-        <p>Residue sequencies 294 to 296 and their secondary structure
-        are shown in the next image.</p>
+        <p>In this visualization residue sequencies 294 to 296 and
+        their secondary structure
+        are shown.</p>
         
         <p><em>use the mouse to rotate and zoom the molecule</em></p>
       </div>
@@ -54,7 +58,13 @@
     </div>
     <div class='row'>
       <div class='large-4 columns justify large-push-8'>
-        <p>The output carbon atoms</p>
+        <div class='large-spacer'></div>
+        <h4>The output carbon atoms.</h4>
+        
+        <p>The algorithm exports the output coordinates in json format to be able to create
+        the 3D visualization.</p>
+        
+        <p><em>use the mouse to rotate and zoom the molecule</em></p>
       </div>
       <div class='large-8 columns large-pull-4'>
         <div class='pv' id='output'></div>

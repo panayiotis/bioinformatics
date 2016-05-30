@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang='en'>
+  <head>
+    <meta charset='utf-8'>
+    <meta content='width=device-width, initial-scale=1.0' name='viewport'>
+    <meta content='ie=edge' http-equiv='x-ua-compatible'>
+    <title>Bioinformatics</title>
+    <meta content='Bioinformatics' name='description'>
+    <meta content='panayiotis' name='author'>
+    <link href='/bioinformatics/assets/icon-e2edc2b228859786fa23e22b543c3f3e7729d33263ab8e50b97e5b9bf59bd7e0.png' rel='icon'>
+    <link href='/bioinformatics/assets/application-dd73e666fa9b543ebf907a93e0173a2e5b4b71558806f40792129ce7f8c64948.css' rel='stylesheet'>
+    <script src='/bioinformatics/assets/application-c779d838f59d1d7b4755ed3af54c2ce8819da5380209310ffbe36cd0fc9d0a1b.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <div class='row'>
+      <div class='medium-6 large-8 columns'>
+        <h1>Ashapes</h1>
+        <p>
+          This project uses CGAL library to create all alpha shapes for the given
+          points and javascript to visualize the resulted json file.
+        </p>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='large-12 columns'>
+        <h2>First example</h2>
+        <div id='workspace1'></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='large-12 columns'>
+        <h2>Second example</h2>
+        <p>added two more points than the exercise</p>
+        <div id='workspace2'></div>
+      </div>
+    </div>
+    <div class='row'>
+      <div class='large-12 columns'>
+        <h2>Code</h2>
+        <p>This project uses CGAL library to create all alpha shapes for a given
+        pointset and Javascript to visualize the resulted json file.</p>
+        
+        <p>Compile using <code>g++ --std=c++11 -lCGAL -lgmp *.cpp</code></p>
+        <ul class='tabs' data-tabs='' id='code-tabs'>
+          <li class='is-active tabs-title'>
+            <a aria-selected='true' href='#panel0'>
+              code
+            </a>
+          </li>
+          <li class='tabs-title'>
+            <a aria-selected='true' href='#panel1'>
+              output 1
+            </a>
+          </li>
+          <li class='tabs-title'>
+            <a aria-selected='true' href='#panel2'>
+              output 2
+            </a>
+          </li>
+        </ul>
+        <div class='tabs-content bleed' data-tabs-content='code-tabs'>
+          <div class='is-active tabs-panel' id='panel0'>
+            <pre><code class='cpp'>#include &lt;CGAL/Exact_predicates_inexact_constructions_kernel.h&gt;&#x000A;#include &lt;CGAL/algorithm.h&gt;&#x000A;#include &lt;CGAL/Delaunay_triangulation_2.h&gt;&#x000A;#include &lt;CGAL/Alpha_shape_2.h&gt;&#x000A;&#x000A;#include &lt;iostream&gt;&#x000A;#include &lt;fstream&gt;&#x000A;#include &lt;vector&gt;&#x000A;#include &lt;list&gt;&#x000A;&#x000A;typedef CGAL::Exact_predicates_inexact_constructions_kernel K;&#x000A;&#x000A;typedef K::FT FT;&#x000A;typedef K::Point_2  Point;&#x000A;typedef K::Segment_2  Segment;&#x000A;&#x000A;typedef CGAL::Alpha_shape_vertex_base_2&lt;K&gt; Vb;&#x000A;typedef CGAL::Alpha_shape_face_base_2&lt;K&gt;  Fb;&#x000A;typedef CGAL::Triangulation_data_structure_2&lt;Vb,Fb&gt; Tds;&#x000A;typedef CGAL::Delaunay_triangulation_2&lt;K,Tds&gt; Triangulation_2;&#x000A;&#x000A;typedef CGAL::Alpha_shape_2&lt;Triangulation_2&gt;  Alpha_shape_2;&#x000A;typedef Alpha_shape_2::Alpha_shape_edges_iterator Alpha_shape_edges_iterator;&#x000A;&#x000A;&#x000A;template &lt;class OutputIterator&gt;&#x000A;bool&#x000A;file_input(OutputIterator out, std::string filename)&#x000A;{&#x000A;  std::ifstream is(filename, std::ios::in);&#x000A;  if(is.fail()){&#x000A;    std::cerr &lt;&lt; &quot;unable to open file for input&quot; &lt;&lt; std::endl;&#x000A;    return false;&#x000A;  }&#x000A;  int n;&#x000A;  is &gt;&gt; n;&#x000A;  std::cerr &lt;&lt; &quot;Reading &quot; &lt;&lt; n &lt;&lt; &quot; points from file&quot; &lt;&lt; std::endl;&#x000A;  CGAL::cpp11::copy_n(std::istream_iterator&lt;Point&gt;(is), n, out);&#x000A;  return true;&#x000A;}&#x000A;&#x000A;using namespace std;&#x000A;// Reads a list of points and returns a list of segments&#x000A;// corresponding to the Alpha shape.&#x000A;int main(int argc, const char *argv[]){&#x000A;  &#x000A;  if (argc != 2){&#x000A;    cerr &lt;&lt; &quot;Provide filename as argument.&quot; &lt;&lt; endl;&#x000A;    exit(1);&#x000A;  }&#x000A;  &#x000A;  string filename = argv[1];&#x000A;  &#x000A;  list&lt;Point&gt; points;&#x000A;  &#x000A;  if(! file_input(std::back_inserter(points),filename)){&#x000A;    return -1;&#x000A;  }&#x000A;  &#x000A;  Alpha_shape_2 A(points.begin(), points.end(),&#x000A;      FT(10000),&#x000A;      Alpha_shape_2::GENERAL);&#x000A;  cerr &lt;&lt; &quot;Alpha shapes created&quot; &lt;&lt; std::endl;&#x000A;  &#x000A;  cout &lt;&lt; &quot;{&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;input_file\&quot;: &quot; &lt;&lt; &quot;\&quot;&quot; &lt;&lt; filename &lt;&lt; &quot;\&quot;,&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;total_points\&quot;: &quot; &lt;&lt; points.size() &lt;&lt; &quot;,&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;points\&quot;: [&quot; &lt;&lt; endl;&#x000A;  for (list&lt;Point&gt;::iterator it = points.begin(); it != points.end(); ++it){&#x000A;    Point p = *it;&#x000A;    cout &lt;&lt; &quot;    [&quot; &lt;&lt; p.x() &lt;&lt; &quot;,&quot; &lt;&lt; p.y()&lt;&lt;&quot;]&quot;;&#x000A;    if (it != --points.end())&#x000A;      cout &lt;&lt; &quot;,&quot;;&#x000A;    cout &lt;&lt; endl;&#x000A;  }&#x000A;  cout &lt;&lt; &quot;    ],&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;total_alphas\&quot;: &quot; &lt;&lt; A.number_of_alphas () &lt;&lt; &quot;,&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;optimal_alpha\&quot;: &quot; &lt;&lt; *A.find_optimal_alpha(1) &lt;&lt; &quot;,&quot;&lt;&lt;endl;&#x000A;  cout &lt;&lt; &quot;  \&quot;alpha_shapes\&quot;: [&quot; &lt;&lt; endl;&#x000A;  for (Alpha_shape_2::Alpha_iterator it = A.alpha_begin(); it != A.alpha_end(); ++it){&#x000A;    A.set_alpha(*it);&#x000A;    cout &lt;&lt; &quot;    {&quot; &lt;&lt; endl;&#x000A;    cout &lt;&lt; &quot;      \&quot;alpha\&quot;: &quot; &lt;&lt; A.get_alpha() &lt;&lt; &quot;,&quot; &lt;&lt; endl;&#x000A;    cout &lt;&lt; &quot;      \&quot;segments\&quot;: [&quot; &lt;&lt; endl;&#x000A;    for(Alpha_shape_edges_iterator it =  A.alpha_shape_edges_begin();&#x000A;      it != A.alpha_shape_edges_end();&#x000A;      ++it){&#x000A;      Segment s = A.segment(*it);&#x000A;      cout &lt;&lt; &quot;        [[&quot; &lt;&lt; s.source().x() &lt;&lt; &quot;,&quot; &lt;&lt; s.source().y()&lt;&lt;&quot;],[&quot;&lt;&lt; s.target().x() &lt;&lt; &quot;,&quot; &lt;&lt; s.target().y()&lt;&lt;&quot;]]&quot;;&#x000A;      if (it != --A.alpha_shape_edges_end())&#x000A;        cout &lt;&lt; &quot;,&quot;;&#x000A;      cout &lt;&lt; endl;&#x000A;    }&#x000A;    cout &lt;&lt; &quot;      ]&quot; &lt;&lt; endl &lt;&lt; &quot;    }&quot;;&#x000A;    if (it != --A.alpha_end())&#x000A;        cout &lt;&lt; &quot;,&quot;;&#x000A;      cout &lt;&lt; endl;&#x000A;  }&#x000A;  cout &lt;&lt; &quot;  ]&quot; &lt;&lt; endl;&#x000A;  cout &lt;&lt; &quot;}&quot; &lt;&lt; endl;&#x000A;  cerr &lt;&lt; &quot;json created&quot; &lt;&lt; std::endl;&#x000A;  return 0;&#x000A;}</code></pre>
+          </div>
+          <div class='tabs-panel' id='panel1'>
+            <pre><code class='cpp'>{&#x000A;  &quot;input_file&quot;: &quot;data/input1&quot;,&#x000A;  &quot;total_points&quot;: 4,&#x000A;  &quot;points&quot;: [&#x000A;    [0,0],&#x000A;    [1,1],&#x000A;    [2,0],&#x000A;    [3,0]&#x000A;    ],&#x000A;  &quot;total_alphas&quot;: 4,&#x000A;  &quot;optimal_alpha&quot;: 2.5,&#x000A;  &quot;alpha_shapes&quot;: [&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.25,&#x000A;      &quot;segments&quot;: [&#x000A;        [[2,0],[3,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.5,&#x000A;      &quot;segments&quot;: [&#x000A;        [[2,0],[3,0]],&#x000A;        [[1,1],[0,0]],&#x000A;        [[2,0],[1,1]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 1,&#x000A;      &quot;segments&quot;: [&#x000A;        [[2,0],[3,0]],&#x000A;        [[1,1],[0,0]],&#x000A;        [[2,0],[1,1]],&#x000A;        [[0,0],[2,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 2.5,&#x000A;      &quot;segments&quot;: [&#x000A;        [[3,0],[1,1]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[1,1],[0,0]],&#x000A;        [[0,0],[2,0]]&#x000A;      ]&#x000A;    }&#x000A;  ]&#x000A;}</code></pre>
+          </div>
+          <div class='tabs-panel' id='panel2'>
+            <pre><code class='cpp'>{&#x000A;  &quot;input_file&quot;: &quot;data/input2&quot;,&#x000A;  &quot;total_points&quot;: 6,&#x000A;  &quot;points&quot;: [&#x000A;    [0,0],&#x000A;    [1,1],&#x000A;    [1.5,1],&#x000A;    [2,0],&#x000A;    [2.5,0.6],&#x000A;    [3,0]&#x000A;    ],&#x000A;  &quot;total_alphas&quot;: 10,&#x000A;  &quot;optimal_alpha&quot;: 1,&#x000A;  &quot;alpha_shapes&quot;: [&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.0625,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.1525,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2.5,0.6],[2,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.25,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2.5,0.6],[2,0]],&#x000A;        [[2,0],[3,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.258403,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2.5,0.6],[2,0]],&#x000A;        [[2,0],[3,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.29,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2.5,0.6],[2,0]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.3125,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2.5,0.6],[2,0]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]],&#x000A;        [[1.5,1],[2,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.345508,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]],&#x000A;        [[1.5,1],[2,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.5,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]],&#x000A;        [[1.5,1],[2,0]],&#x000A;        [[1,1],[0,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 0.625,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1,1],[2,0]],&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]],&#x000A;        [[1,1],[0,0]]&#x000A;      ]&#x000A;    },&#x000A;    {&#x000A;      &quot;alpha&quot;: 1,&#x000A;      &quot;segments&quot;: [&#x000A;        [[1.5,1],[1,1]],&#x000A;        [[3,0],[2.5,0.6]],&#x000A;        [[2,0],[3,0]],&#x000A;        [[2.5,0.6],[1.5,1]],&#x000A;        [[1,1],[0,0]],&#x000A;        [[0,0],[2,0]]&#x000A;      ]&#x000A;    }&#x000A;  ]&#x000A;}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      (function() {
+        var ashapes1, ashapes2;
+      
+        ashapes1 = JSON.parse("{\n  \"input_file\": \"data/input1\",\n  \"total_points\": 4,\n  \"points\": [\n    [0,0],\n    [1,1],\n    [2,0],\n    [3,0]\n    ],\n  \"total_alphas\": 4,\n  \"optimal_alpha\": 2.5,\n  \"alpha_shapes\": [\n    {\n      \"alpha\": 0.25,\n      \"segments\": [\n        [[2,0],[3,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.5,\n      \"segments\": [\n        [[2,0],[3,0]],\n        [[1,1],[0,0]],\n        [[2,0],[1,1]]\n      ]\n    },\n    {\n      \"alpha\": 1,\n      \"segments\": [\n        [[2,0],[3,0]],\n        [[1,1],[0,0]],\n        [[2,0],[1,1]],\n        [[0,0],[2,0]]\n      ]\n    },\n    {\n      \"alpha\": 2.5,\n      \"segments\": [\n        [[3,0],[1,1]],\n        [[2,0],[3,0]],\n        [[1,1],[0,0]],\n        [[0,0],[2,0]]\n      ]\n    }\n  ]\n}\n");
+      
+        ashapes2 = JSON.parse("{\n  \"input_file\": \"data/input2\",\n  \"total_points\": 6,\n  \"points\": [\n    [0,0],\n    [1,1],\n    [1.5,1],\n    [2,0],\n    [2.5,0.6],\n    [3,0]\n    ],\n  \"total_alphas\": 10,\n  \"optimal_alpha\": 1,\n  \"alpha_shapes\": [\n    {\n      \"alpha\": 0.0625,\n      \"segments\": [\n        [[1.5,1],[1,1]]\n      ]\n    },\n    {\n      \"alpha\": 0.1525,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2.5,0.6],[2,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.25,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2.5,0.6],[2,0]],\n        [[2,0],[3,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.258403,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2.5,0.6],[2,0]],\n        [[2,0],[3,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.29,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2.5,0.6],[2,0]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]]\n      ]\n    },\n    {\n      \"alpha\": 0.3125,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2.5,0.6],[2,0]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]],\n        [[1.5,1],[2,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.345508,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]],\n        [[1.5,1],[2,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.5,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]],\n        [[1.5,1],[2,0]],\n        [[1,1],[0,0]]\n      ]\n    },\n    {\n      \"alpha\": 0.625,\n      \"segments\": [\n        [[1,1],[2,0]],\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]],\n        [[1,1],[0,0]]\n      ]\n    },\n    {\n      \"alpha\": 1,\n      \"segments\": [\n        [[1.5,1],[1,1]],\n        [[3,0],[2.5,0.6]],\n        [[2,0],[3,0]],\n        [[2.5,0.6],[1.5,1]],\n        [[1,1],[0,0]],\n        [[0,0],[2,0]]\n      ]\n    }\n  ]\n}\n");
+      
+        ashapes('#workspace1', ashapes1);
+      
+        ashapes('#workspace2', ashapes2);
+      
+      }).call(this);
+    </script>
+    <script>
+      (function() {
+        $(document).foundation();
+      
+        hljs.configure({
+          languages: []
+        });
+      
+        hljs.initHighlightingOnLoad();
+      
+      }).call(this);
+    </script>
+  </body>
+</html>
